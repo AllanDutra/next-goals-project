@@ -1,0 +1,21 @@
+$primary: #59616e;
+
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+  opacity: 0.9;
+  color: lighten($primary, 30);
+
+  *:first-child {
+    color: lighten($primary, 50);
+  }
+
+  p {
+    font-size: 1.25em;
+    font-weight: 300;
+  }
+}
