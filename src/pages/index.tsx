@@ -4,6 +4,7 @@ import { useState } from "react";
 import { EmptyState } from "../components/EmptyState";
 import { FloatingButton } from "../components/FloatingButton";
 import { Goal, GoalProps } from "../components/Goal";
+import { PageContainer } from "../components/PageContainer";
 import { GoalStatus } from "../components/StatusTag";
 
 import styles from "../styles/styles.module.scss";
@@ -45,18 +46,8 @@ export default function Home() {
       <Head>
         <title>Goals - Alcançando objetivos</title>
       </Head>
-      <header className={styles.header}>
-        <div className={styles.userPictureContainer}>
-          <img
-            src="https://sujeitoprogramador.com/steve.png"
-            alt="User picture"
-          />
-        </div>
 
-        <button>Sair</button>
-      </header>
-
-      <main className={styles.container}>
+      <PageContainer>
         <div className={styles.presentation}>
           <h1>Olá, Usuário! Acompanhe suas metas para o ano de 2023.</h1>
 
@@ -80,7 +71,7 @@ export default function Home() {
             ))}
           </ul>
         )}
-      </main>
+      </PageContainer>
 
       <FloatingButton icon={<Plus />} />
     </>
