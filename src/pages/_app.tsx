@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 
 import "../styles/global.scss";
 
-const theme = createTheme({
+export const theme = createTheme({
   palette: {
     primary: {
       main: "#404eed",
