@@ -1,5 +1,12 @@
 import moment from "moment";
-import { BatteryCharging, Clock, PresentationChart } from "phosphor-react";
+import {
+  BatteryCharging,
+  Clock,
+  IconContext,
+  PencilSimple,
+  PresentationChart,
+  Trash,
+} from "phosphor-react";
 import { useMemo } from "react";
 import { KeyValuePair } from "../KeyValuePair";
 import { LinearProgress } from "../LinearProgress";
@@ -44,11 +51,30 @@ export function Goal({ goalData }: Props) {
       }`}
     >
       <section className={styles.header}>
-        <h2>
-          {goalIsAccomplished && <img src="/check-circle.svg" alt="OK" />}
+        <div className={styles.titleContainer}>
+          <h2>
+            {goalIsAccomplished && <img src="/check-circle.svg" alt="OK" />}
 
-          {goalData.title}
-        </h2>
+            {goalData.title}
+          </h2>
+
+          <IconContext.Provider
+            value={{
+              weight: "light",
+              size: 20,
+            }}
+          >
+            <div>
+              <button>
+                Atualizar <PencilSimple />
+              </button>
+
+              <button>
+                Excluir <Trash />
+              </button>
+            </div>
+          </IconContext.Provider>
+        </div>
 
         <p>{goalData.description}</p>
       </section>

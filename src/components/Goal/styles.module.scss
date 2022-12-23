@@ -13,6 +13,10 @@
   &:hover {
     transform: scale(1.025);
     border-color: lighten(#1e2333, 70);
+
+    button {
+      opacity: 1;
+    }
   }
 }
 
@@ -25,11 +29,10 @@
     font-weight: 600;
     font-size: 1.5em;
     color: #1e2333;
-    margin-bottom: 0.25em;
 
     display: flex;
     align-items: center;
-    gap: .5em;
+    gap: 0.5em;
 
     img {
       width: 1.25em;
@@ -42,6 +45,40 @@
     font-weight: 300;
     color: #565d69;
     text-align: justify;
+  }
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  gap: 2.5em;
+  margin-bottom: 0.5em;
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+
+    button {
+      opacity: 0;
+      font-size: 1.05em;
+      font-weight: 300;
+      padding: 0.5em 1em;
+      line-height: 150%;
+      transition: all 0.2s;
+
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      color: #1e2333;
+      background: transparent;
+      border: none;
+      border-radius: 0.3em;
+
+      &:hover {
+        background: lighten(#565d69, 60);
+      }
+    }
   }
 }
 
