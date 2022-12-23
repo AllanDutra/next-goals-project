@@ -2,12 +2,12 @@ import { IconContext } from "phosphor-react";
 import { ReactNode } from "react";
 import styles from "./styles.module.scss";
 
-interface IEmptyStateProps {
+interface Props {
   icon: ReactNode;
   message: string;
 }
 
-export function EmptyState({ icon, message }: IEmptyStateProps) {
+export function EmptyState({ icon, message }: Props) {
   return (
     <div className={styles.container}>
       <IconContext.Provider
