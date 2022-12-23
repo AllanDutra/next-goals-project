@@ -2,11 +2,42 @@ import Head from "next/head";
 import { Sparkle } from "phosphor-react";
 import { useState } from "react";
 import { EmptyState } from "../components/EmptyState";
+import { Goal, GoalProps } from "../components/Goal";
+import { GoalStatus } from "../components/StatusTag";
 
 import styles from "../styles/styles.module.scss";
 
 export default function Home() {
-  const [goals, setGoals] = useState([]);
+  const [goals] = useState<GoalProps[]>([
+    {
+      id: "1",
+      title: "Curso de NextJS na Udemy",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      createdAt: new Date("01-01-2001"),
+      // updated?: Date;
+      status: GoalStatus.InProgress,
+      priority: 50,
+      // endForecast?: Date;
+      metric: "Aulas",
+      totalToAccomplish: 200,
+      totalAccomplished: 70,
+    },
+    {
+      id: "1",
+      title: "Curso de NextJS na Udemy",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      createdAt: new Date("01-01-2001"),
+      // updated?: Date;
+      status: GoalStatus.InProgress,
+      priority: 50,
+      // endForecast?: Date;
+      metric: "Aulas",
+      totalToAccomplish: 200,
+      totalAccomplished: 70,
+    },
+  ]);
 
   return (
     <>
@@ -41,8 +72,11 @@ export default function Home() {
           />
         ) : (
           <ul className={styles.goalsList}>
-            <li></li>
-            <li></li>
+            {goals.map((goal) => (
+              <li key={goal.id}>
+                <Goal goalData={goal} />
+              </li>
+            ))}
           </ul>
         )}
       </main>
