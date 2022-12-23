@@ -1,6 +1,7 @@
 import moment from "moment";
 import { BatteryCharging, Clock, PresentationChart } from "phosphor-react";
 import { KeyValuePair } from "../KeyValuePair";
+import { LinearProgress } from "../LinearProgress";
 import { GoalStatus, StatusTag } from "../StatusTag";
 
 import styles from "./styles.module.scss";
@@ -26,11 +27,11 @@ interface Props {
 export function Goal({ goalData }: Props) {
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
+      <section className={styles.header}>
         <h2>{goalData.title}</h2>
 
         <p>{goalData.description}</p>
-      </div>
+      </section>
 
       <div className={styles.attributes}>
         <KeyValuePair.Container>
@@ -78,6 +79,18 @@ export function Goal({ goalData }: Props) {
           <KeyValuePair.Value valueData={goalData.priority} />
         </KeyValuePair.Container>
       </div>
+
+      <section className={styles.progress}>
+        <h3>
+          Progresso de {goalData.metric}, {goalData.totalAccomplished || 0} de{" "}
+          {goalData.totalToAccomplish}
+        </h3>
+
+        <LinearProgress
+          totalToAccomplish={goalData.totalToAccomplish}
+          totalAccomplished={goalData.totalAccomplished}
+        />
+      </section>
     </div>
   );
 }

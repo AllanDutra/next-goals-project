@@ -39,3 +39,15 @@
   flex-direction: column;
   gap: 0.5em;
 }
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+
+  h3 {
+    font-size: 1.1em;
+    font-weight: 300;
+    color: #565d69;
+  }
+}
