@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  align-items: center;
+  font-size: 1em;
+  font-weight: 300;
+}
+
+.label {
+  min-width: 10em;
+  color: #9c9b98;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.value {
+  color: #1e2333;
+}
