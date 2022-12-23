@@ -1,5 +1,5 @@
-$primary: #1aae9f;
-$primaryShadow: #1aae9f3d;
+$primary: #404eed;
+$primaryShadow: #404eed3d;
 $theme: #ffffff;
 
 .header {
@@ -82,10 +82,13 @@ $theme: #ffffff;
   list-style-type: none;
   display: flex;
   flex-direction: column;
+  gap: 2em;
   width: 100%;
+  padding: 2em 0;
 
   li {
     width: 100%;
+    display: flex;
   }
 
   li:last-child {
