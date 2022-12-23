@@ -1,0 +1,41 @@
+.container {
+  flex: 1;
+  background: white;
+  border-radius: 1em;
+  border: 1px solid #edf1f5;
+  padding: 1.5em;
+  user-select: none;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+
+  &:hover {
+    transform: scale(1.025);
+    cursor: pointer;
+    border-color: lighten(#1e2333, 70);
+  }
+}
+
+.header {
+  h2 {
+    font-weight: 600;
+    font-size: 1.5em;
+    color: #1e2333;
+    margin-bottom: 0.25em;
+  }
+
+  p {
+    font-size: 1.1em;
+    line-height: 180%;
+    font-weight: 300;
+    color: #565d69;
+    text-align: justify;
+  }
+}
+
+.attributes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
