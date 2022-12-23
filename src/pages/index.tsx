@@ -1,7 +1,8 @@
 import Head from "next/head";
-import { Sparkle } from "phosphor-react";
+import { Plus, Sparkle } from "phosphor-react";
 import { useState } from "react";
 import { EmptyState } from "../components/EmptyState";
+import { FloatingButton } from "../components/FloatingButton";
 import { Goal, GoalProps } from "../components/Goal";
 import { GoalStatus } from "../components/StatusTag";
 
@@ -80,6 +81,8 @@ export default function Home() {
           </ul>
         )}
       </main>
+
+      <FloatingButton icon={<Plus />} />
     </>
   );
 }
