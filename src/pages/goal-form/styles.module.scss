@@ -1,0 +1,23 @@
+.presentationContainer {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  width: 100%;
+}
+
+.form {
+  flex: 1;
+  padding: 2em 0;
+}
+
+.gridGroup {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8em;
+}
+
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}

@@ -2,12 +2,13 @@ import Head from "next/head";
 import { Plus, Sparkle } from "phosphor-react";
 import { useState } from "react";
 import { EmptyState } from "../components/EmptyState";
-import { FloatingButton } from "../components/FloatingButton";
+import { IconButton } from "../components/IconButton";
 import { Goal, GoalProps } from "../components/Goal";
 import { PageContainer } from "../components/PageContainer";
-import { GoalStatus } from "../components/StatusTag";
+import { GoalStatus } from "../components/Status";
 
 import styles from "../styles/styles.module.scss";
+import { Presentation } from "../components/Presentation";
 
 export default function Home() {
   const [goals] = useState<GoalProps[]>([
@@ -48,14 +49,11 @@ export default function Home() {
       </Head>
 
       <PageContainer>
-        <div className={styles.presentation}>
-          <h1>Olá, Usuário! Acompanhe suas metas para o ano de 2023.</h1>
-
-          <p>
-            Usuário, você precisa estar mais focado, já fazem 3 dias que você
-            não atualiza suas metas!
-          </p>
-        </div>
+        <Presentation
+          title="Olá, Usuário! Acompanhe suas metas para o ano de 2023."
+          subtitle="Usuário, você precisa estar mais focado, já fazem 3 dias que você
+        não atualiza suas metas!"
+        />
 
         {goals.length === 0 ? (
           <EmptyState
@@ -73,7 +71,11 @@ export default function Home() {
         )}
       </PageContainer>
 
-      <FloatingButton icon={<Plus />} />
+      <IconButton.Floating>
+        <IconButton.Link href="/goal-form">
+          <IconButton.Button icon={<Plus />} />
+        </IconButton.Link>
+      </IconButton.Floating>
     </>
   );
 }

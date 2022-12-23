@@ -10,7 +10,7 @@ import {
 import { useMemo } from "react";
 import { KeyValuePair } from "../KeyValuePair";
 import { LinearProgress } from "../LinearProgress";
-import { GoalStatus, StatusTag } from "../StatusTag";
+import { GoalStatus, Status } from "../Status";
 
 import styles from "./styles.module.scss";
 
@@ -113,7 +113,7 @@ export function Goal({ goalData }: Props) {
         <KeyValuePair.Container>
           <KeyValuePair.Label labelData="Status" icon={<PresentationChart />} />
           <KeyValuePair.Value
-            valueData={<StatusTag statusData={goalData.status} />}
+            valueData={<Status.Tag statusData={goalData.status} />}
           />
         </KeyValuePair.Container>
 
