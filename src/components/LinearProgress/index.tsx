@@ -4,10 +4,10 @@ import MuiLinearProgress, {
 } from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { theme } from "../../pages/_app";
 
 interface Props {
-  totalAccomplished?: number;
-  totalToAccomplish: number;
+  progress: number;
 }
 
 function LinearProgressWithLabel(
@@ -38,6 +38,7 @@ function LinearProgressWithLabel(
           style={{
             fontWeight: "600",
             fontSize: "1em",
+            color: color === "success" ? theme.palette.success.main : undefined,
           }}
         >{`${Math.round(props.value)}%`}</Typography>
       </Box>
@@ -45,15 +46,7 @@ function LinearProgressWithLabel(
   );
 }
 
-export function LinearProgress({
-  totalAccomplished = 0,
-  totalToAccomplish,
-}: Props) {
-  const progress: number = React.useMemo(
-    () => (100.0 * totalAccomplished) / totalToAccomplish,
-    [totalAccomplished, totalToAccomplish]
-  );
-
+export function LinearProgress({ progress }: Props) {
   return (
     <Box sx={{ width: "100%" }}>
       <LinearProgressWithLabel value={progress} />

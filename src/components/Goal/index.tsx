@@ -1,5 +1,6 @@
 import moment from "moment";
 import { BatteryCharging, Clock, PresentationChart } from "phosphor-react";
+import { useMemo } from "react";
 import { KeyValuePair } from "../KeyValuePair";
 import { LinearProgress } from "../LinearProgress";
 import { GoalStatus, StatusTag } from "../StatusTag";
@@ -25,10 +26,29 @@ interface Props {
 }
 
 export function Goal({ goalData }: Props) {
+  const progress: number = useMemo(
+    () =>
+      (100.0 * (goalData.totalAccomplished || 0)) / goalData.totalToAccomplish,
+    [goalData.totalAccomplished, goalData.totalToAccomplish]
+  );
+
+  const goalIsAccomplished: boolean = useMemo(
+    () => progress === 100,
+    [progress]
+  );
+
   return (
-    <div className={styles.container}>
+    <div
+      className={`${styles.container}${
+        goalIsAccomplished ? ` ${styles.accomplishedContainer}` : ""
+      }`}
+    >
       <section className={styles.header}>
-        <h2>{goalData.title}</h2>
+        <h2>
+          {goalIsAccomplished && <img src="/check-circle.svg" alt="OK" />}
+
+          {goalData.title}
+        </h2>
 
         <p>{goalData.description}</p>
       </section>
@@ -86,10 +106,7 @@ export function Goal({ goalData }: Props) {
           {goalData.totalToAccomplish}
         </h3>
 
-        <LinearProgress
-          totalToAccomplish={goalData.totalToAccomplish}
-          totalAccomplished={goalData.totalAccomplished}
-        />
+        <LinearProgress progress={progress} />
       </section>
     </div>
   );

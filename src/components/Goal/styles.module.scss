@@ -12,9 +12,12 @@
 
   &:hover {
     transform: scale(1.025);
-    cursor: pointer;
     border-color: lighten(#1e2333, 70);
   }
+}
+
+.accomplishedContainer {
+  background: lighten(#1aae9f, 58);
 }
 
 .header {
@@ -23,6 +26,14 @@
     font-size: 1.5em;
     color: #1e2333;
     margin-bottom: 0.25em;
+
+    display: flex;
+    align-items: center;
+    gap: .5em;
+
+    img {
+      width: 1.25em;
+    }
   }
 
   p {

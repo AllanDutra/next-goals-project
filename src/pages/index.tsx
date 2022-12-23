@@ -35,7 +35,7 @@ export default function Home() {
       // endForecast?: Date;
       metric: "Aulas",
       totalToAccomplish: 200,
-      totalAccomplished: 70,
+      totalAccomplished: 200,
     },
   ]);
 
