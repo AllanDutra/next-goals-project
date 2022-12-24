@@ -19,7 +19,7 @@ export default function Home() {
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
       createdAt: new Date("01-01-2001"),
       // updated?: Date;
-      status: GoalStatus.InProgress,
+      status: GoalStatus.Paused,
       priority: 50,
       // endForecast?: Date;
       metric: "Aulas",
@@ -33,7 +33,7 @@ export default function Home() {
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
       createdAt: new Date("01-01-2001"),
       // updated?: Date;
-      status: GoalStatus.InProgress,
+      status: GoalStatus.Finished,
       priority: 50,
       // endForecast?: Date;
       metric: "Aulas",

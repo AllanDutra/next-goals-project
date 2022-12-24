@@ -1,3 +1,5 @@
+import styles from "./styles.module.scss";
+
 export enum GoalStatus {
   NotStarted = 0,
   InProgress = 1,
@@ -19,8 +21,22 @@ function getLabel(goalStatus: GoalStatus): string {
   return "Finalizado";
 }
 
+function getColorVariant(goalStatus: GoalStatus): string {
+  if (goalStatus === GoalStatus.NotStarted) return styles.notStarted;
+
+  if (goalStatus === GoalStatus.InProgress) return styles.inProgress;
+
+  if (goalStatus === GoalStatus.Paused) return styles.paused;
+
+  return styles.finished;
+}
+
 function Tag({ statusData }: Props) {
-  return <span>{statusData}</span>;
+  return (
+    <span className={`${styles.container} ${getColorVariant(statusData)}`}>
+      {getLabel(statusData)}
+    </span>
+  );
 }
 
 export const Status = { getLabel, Tag };
