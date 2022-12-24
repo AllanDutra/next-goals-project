@@ -12,7 +12,7 @@ export function PageContainer({ children }: Props) {
       <header className={styles.header}>
         <div className={styles.userPictureContainer}>
           <img
-            src="https://sujeitoprogramador.com/steve.png"
+            src="https://github.com/AllanDutra.png"
             alt="User picture"
           />
         </div>
