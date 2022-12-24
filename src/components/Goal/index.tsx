@@ -11,6 +11,7 @@ import {
 import { useMemo } from "react";
 import { KeyValuePair } from "../KeyValuePair";
 import { LinearProgress } from "../LinearProgress";
+import { GoalInfoToDelete } from "../ModalConfirmExcludeGoal";
 import { GoalStatus, Status } from "../Status";
 
 import styles from "./styles.module.scss";
@@ -31,9 +32,10 @@ export interface GoalProps {
 
 interface Props {
   goalData: GoalProps;
+  onExclude?(goalInfo: GoalInfoToDelete): void;
 }
 
-export function Goal({ goalData }: Props) {
+export function Goal({ goalData, onExclude }: Props) {
   const progress: number = useMemo(
     () =>
       (100.0 * (goalData.totalAccomplished || 0)) / goalData.totalToAccomplish,
@@ -72,7 +74,14 @@ export function Goal({ goalData }: Props) {
                 </button>
               </Link>
 
-              <button>
+              <button
+                onClick={() =>
+                  onExclude?.({
+                    id: goalData.id,
+                    title: goalData.title,
+                  })
+                }
+              >
                 Excluir <Trash />
               </button>
             </div>
