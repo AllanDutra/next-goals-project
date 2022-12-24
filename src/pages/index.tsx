@@ -5,10 +5,9 @@ import { EmptyState } from "../components/EmptyState";
 import { IconButton } from "../components/IconButton";
 import { Goal, GoalProps } from "../components/Goal";
 import { PageContainer } from "../components/PageContainer";
-import { GoalStatus } from "../components/Status";
 
 import { GetServerSideProps } from "next";
-import { getSession, useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 
 import styles from "../styles/styles.module.scss";
 import { Presentation } from "../components/Presentation";
@@ -18,39 +17,22 @@ import {
 } from "../components/ModalConfirmExcludeGoal";
 import { Utils } from "../functions/Utils";
 
-export default function Home() {
-  const { data: session } = useSession();
+import firebase from "../services/firebaseConnection";
 
-  const [goals] = useState<GoalProps[]>([
-    {
-      id: "1",
-      title: "Curso de NextJS na Udemy",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      createdAt: new Date("01-01-2001"),
-      // updated?: Date;
-      status: GoalStatus.Paused,
-      priority: 50,
-      // endForecast?: Date;
-      metric: "Aulas",
-      totalToAccomplish: 200,
-      totalAccomplished: 70,
-    },
-    {
-      id: "2",
-      title: "Curso de NextJS na Udemy",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      createdAt: new Date("01-01-2001"),
-      // updated?: Date;
-      status: GoalStatus.Finished,
-      priority: 50,
-      // endForecast?: Date;
-      metric: "Aulas",
-      totalToAccomplish: 200,
-      totalAccomplished: 200,
-    },
-  ]);
+interface User {
+  fullName: string;
+  firstName: string;
+}
+
+interface Props {
+  user: string;
+  goalsData: string;
+}
+
+export default function Home({ user, goalsData }: Props) {
+  const [userInfo] = useState<User>(JSON.parse(user));
+
+  const [goals] = useState<GoalProps[]>(JSON.parse(goalsData));
 
   const [goalInfoToDelete, setGoalInfoToDelete] = useState<GoalInfoToDelete>({
     id: "",
@@ -76,12 +58,8 @@ export default function Home() {
 
       <PageContainer>
         <Presentation
-          title={`Olá, ${Utils.getOnlyFirstName(
-            session?.user?.name
-          )}! Acompanhe suas metas para o ano de 2023.`}
-          subtitle={`${Utils.getOnlyFirstName(
-            session?.user?.name
-          )}, você precisa estar mais focado, já fazem 3 dias que você
+          title={`Olá, ${userInfo.firstName}! Acompanhe suas metas para o ano de 2023.`}
+          subtitle={`${userInfo.firstName}, você precisa estar mais focado, já fazem 3 dias que você
         não atualiza suas metas!`}
         />
 
@@ -126,7 +104,28 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       },
     };
 
+  const goals = await firebase
+    .firestore()
+    .collection("goals")
+    .where("userEmail", "==", session.user.email)
+    .orderBy("priority", "desc")
+    .get();
+
+  const goalsData = JSON.stringify(
+    goals.docs.map((goalItem) => {
+      return { ...goalItem.data() };
+    })
+  );
+
+  const user: User = {
+    fullName: session.user.name || "",
+    firstName: Utils.getOnlyFirstName(session.user.name),
+  };
+
   return {
-    props: {},
+    props: {
+      user,
+      goalsData,
+    },
   };
 };
