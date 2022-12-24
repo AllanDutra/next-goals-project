@@ -1,11 +1,13 @@
 import {
   Checkbox,
+  createTheme,
   FormControl,
   FormControlLabel,
   InputLabel,
   MenuItem,
   Select,
   TextField,
+  ThemeProvider,
 } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -35,6 +37,13 @@ interface GoalFormValues {
   totalToAccomplish: string;
   totalAccomplished?: string;
 }
+
+const formTheme = createTheme({
+  palette: {
+    mode: "dark",
+    primary: { main: "#8B949E" },
+  },
+});
 
 export default function GoalFormPage() {
   return (
@@ -85,102 +94,104 @@ function Content() {
   const [insertEndDate, setInsertEndDate] = useState(false);
 
   return (
-    <form className={styles.form}>
-      <div className={styles.gridGroup}>
-        <div className={styles.formGrid}>
-          <TextField
-            autoFocus
-            autoComplete="off"
-            label="Título"
-            name="title"
-            value={goalFormValues.title}
-          />
-
-          <TextField
-            autoComplete="off"
-            label="Descrição"
-            name="description"
-            value={goalFormValues.description}
-          />
-
-          <FormControl>
-            <InputLabel>Status</InputLabel>
-            <Select label="Status" value={goalFormValues.status}>
-              {goalsStatuses.map((goalStatus) => (
-                <MenuItem value={goalStatus}>
-                  {Status.getLabel(goalStatus)}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <div className={styles.endForecastContainer}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={insertEndDate}
-                  onChange={() => setInsertEndDate(!insertEndDate)}
-                />
-              }
-              label="Inserir previsão de término"
+    <ThemeProvider theme={formTheme}>
+      <form className={styles.form}>
+        <div className={styles.gridGroup}>
+          <div className={styles.formGrid}>
+            <TextField
+              autoFocus
+              autoComplete="off"
+              label="Título"
+              name="title"
+              value={goalFormValues.title}
             />
 
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DesktopDatePicker
-                label="Previsão de término"
-                inputFormat="DD/MM/YYYY"
-                value={goalFormValues.endForecast}
-                onChange={() => {}}
-                renderInput={(params) => <TextField {...params} />}
-                disabled={!insertEndDate}
+            <TextField
+              autoComplete="off"
+              label="Descrição"
+              name="description"
+              value={goalFormValues.description}
+            />
+
+            <FormControl>
+              <InputLabel>Status</InputLabel>
+              <Select label="Status" value={goalFormValues.status}>
+                {goalsStatuses.map((goalStatus) => (
+                  <MenuItem value={goalStatus}>
+                    {Status.getLabel(goalStatus)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <div className={styles.endForecastContainer}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={insertEndDate}
+                    onChange={() => setInsertEndDate(!insertEndDate)}
+                  />
+                }
+                label="Inserir previsão de término"
               />
-            </LocalizationProvider>
+
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DesktopDatePicker
+                  label="Previsão de término"
+                  inputFormat="DD/MM/YYYY"
+                  value={goalFormValues.endForecast}
+                  onChange={() => {}}
+                  renderInput={(params) => <TextField {...params} />}
+                  disabled={!insertEndDate}
+                />
+              </LocalizationProvider>
+            </div>
+          </div>
+
+          <div className={styles.formGrid}>
+            <TextField
+              autoComplete="off"
+              label="Prioridade"
+              name="priority"
+              value={goalFormValues.priority}
+            />
+
+            <TextField
+              autoComplete="off"
+              label="Métrica"
+              name="metric"
+              value={goalFormValues.metric}
+            />
+
+            <TextField
+              autoComplete="off"
+              label="Total a realizar"
+              name="totalToAccomplish"
+              value={goalFormValues.totalToAccomplish}
+            />
+
+            <TextField
+              autoComplete="off"
+              label="Total realizado"
+              name="totalAccomplished"
+              value={goalFormValues.totalAccomplished}
+            />
           </div>
         </div>
 
-        <div className={styles.formGrid}>
-          <TextField
-            autoComplete="off"
-            label="Prioridade"
-            name="priority"
-            value={goalFormValues.priority}
-          />
+        <div className={styles.buttonGrid}>
+          <Link href="/">
+            <button className={styles.outlineButton} type="button">
+              Cancelar
+            </button>
+          </Link>
 
-          <TextField
-            autoComplete="off"
-            label="Métrica"
-            name="metric"
-            value={goalFormValues.metric}
-          />
-
-          <TextField
-            autoComplete="off"
-            label="Total a realizar"
-            name="totalToAccomplish"
-            value={goalFormValues.totalToAccomplish}
-          />
-
-          <TextField
-            autoComplete="off"
-            label="Total realizado"
-            name="totalAccomplished"
-            value={goalFormValues.totalAccomplished}
-          />
-        </div>
-      </div>
-
-      <div className={styles.buttonGrid}>
-        <Link href="/">
-          <button className={styles.outlineButton} type="button">
-            Cancelar
+          <button className={styles.primaryButton} type="submit">
+            Salvar
           </button>
-        </Link>
-
-        <button className={styles.primaryButton} type="submit">
-          Salvar
-        </button>
-      </div>
-    </form>
+        </div>
+      </form>
+    </ThemeProvider>
   );
 }
 

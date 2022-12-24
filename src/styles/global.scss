@@ -18,7 +18,7 @@
 }
 
 body {
-  background: white;
+  background: #0d1117;
 }
 
 body,
@@ -27,6 +27,15 @@ textarea,
 select,
 button {
   font: 400 1rem sans-serif;
+}
+
+body::-webkit-scrollbar {
+  background-color: #161b22;
+  width: 0.625em;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #21262d;
 }
 
 button {

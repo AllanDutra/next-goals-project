@@ -1,6 +1,6 @@
-$primary: #404eed;
-$primaryShadow: #404eed3d;
-$theme: #ffffff;
+$primary: #161B22;
+$primaryShadow: #161B223d;
+$theme: #0D1117;
 
 .header {
   background-color: $primary;
@@ -19,13 +19,13 @@ $theme: #ffffff;
     font-weight: 600;
     line-height: 150%;
     font-size: 1.1em;
-    color: $theme;
-    background: darken($primary, 2);
+    color: white;
+    background: lighten($primary, 2);
     transition: all 0.2s;
 
     &:hover {
       transform: scale(1.1);
-      background: darken($primary, 4);
+      background: lighten($primary, 4);
     }
   }
 }

@@ -5,8 +5,9 @@ import "../styles/global.scss";
 
 export const theme = createTheme({
   palette: {
+    mode: "dark",
     primary: {
-      main: "#404eed",
+      main: "#1F6FEB",
     },
     success: {
       main: "#1AAE9F",

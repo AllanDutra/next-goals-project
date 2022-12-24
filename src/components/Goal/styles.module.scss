@@ -1,8 +1,8 @@
 .container {
   flex: 1;
-  background: white;
+  background: #161b22;
   border-radius: 1em;
-  border: 1px solid #edf1f5;
+  border: 1px solid #21262d;
   padding: 1.5em;
   user-select: none;
   transition: all 0.2s;
@@ -12,7 +12,7 @@
 
   &:hover {
     transform: scale(1.025);
-    border-color: lighten(#1e2333, 70);
+    border-color: darken(#ffffff, 75);
 
     button {
       opacity: 1;
@@ -21,14 +21,14 @@
 }
 
 .accomplishedContainer {
-  background: lighten(#1aae9f, 58);
+  background: #1aae9f1e;
 }
 
 .header {
   h2 {
     font-weight: 600;
     font-size: 1.5em;
-    color: #1e2333;
+    color: #c9d1d9;
 
     display: flex;
     align-items: center;
@@ -43,7 +43,7 @@
     font-size: 1.1em;
     line-height: 180%;
     font-weight: 300;
-    color: #565d69;
+    color: #c9d1d9;
     text-align: justify;
   }
 }
@@ -70,13 +70,13 @@
       display: flex;
       align-items: center;
       gap: 0.5em;
-      color: #1e2333;
+      color: #c9d1d9;
       background: transparent;
       border: none;
       border-radius: 0.3em;
 
       &:hover {
-        background: lighten(#565d69, 60);
+        background: lighten(#161b22, 4);
       }
     }
   }
@@ -96,6 +96,6 @@
   h3 {
     font-size: 1.1em;
     font-weight: 300;
-    color: #565d69;
+    color: #c9d1d9;
   }
 }

@@ -40,7 +40,7 @@ interface ValueProps {
 }
 
 function Value({ valueData }: ValueProps) {
-  return <span>{valueData}</span>;
+  return <span className={styles.value}>{valueData}</span>;
 }
 
 export const KeyValuePair = { Container, Label, Value };
