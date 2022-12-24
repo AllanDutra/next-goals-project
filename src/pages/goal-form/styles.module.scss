@@ -8,6 +8,11 @@
 .form {
   flex: 1;
   padding: 2em 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 0;
 }
 
 .gridGroup {
@@ -20,4 +25,51 @@
   display: flex;
   flex-direction: column;
   gap: 2em;
+}
+
+.endForecastContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.buttonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8em;
+
+  a {
+    display: flex;
+  }
+
+  button {
+    flex: 1;
+    padding: 1em 0;
+    font-size: 1.15em;
+    border-radius: 0.3em;
+    border: none;
+    transition: all 0.4s;
+  }
+
+  .outlineButton {
+    font-weight: 500;
+    color: lighten(#404eed, 8);
+    border: 1px solid lighten(#404eed, 25);
+    background: transparent;
+
+    &:hover {
+      background: lighten(#404eed, 39);
+    }
+  }
+
+  .primaryButton {
+    font-weight: 600;
+    box-shadow: 2px 2px 4px 0 #404eed3d;
+    background: #404eed;
+    color: white;
+
+    &:hover {
+      background: darken(#404eed, 25);
+    }
+  }
 }

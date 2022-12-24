@@ -1,12 +1,11 @@
-import { title } from "process";
 import styles from "./styles.module.scss";
 
-interface Props {
+export interface PresentationProps {
   title: string;
   subtitle?: string;
 }
 
-export function Presentation({ title, subtitle }: Props) {
+export function Presentation({ title, subtitle }: PresentationProps) {
   return (
     <div className={styles.presentation}>
       <h1>{title}</h1>
