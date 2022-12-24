@@ -25,15 +25,11 @@ interface User {
 }
 
 interface Props {
-  user: string;
-  goalsData: string;
+  user: User;
+  goalsData: GoalProps[];
 }
 
 export default function Home({ user, goalsData }: Props) {
-  const [userInfo] = useState<User>(JSON.parse(user));
-
-  const [goals] = useState<GoalProps[]>(JSON.parse(goalsData));
-
   const [goalInfoToDelete, setGoalInfoToDelete] = useState<GoalInfoToDelete>({
     id: "",
     title: "",
@@ -58,19 +54,19 @@ export default function Home({ user, goalsData }: Props) {
 
       <PageContainer>
         <Presentation
-          title={`Olá, ${userInfo.firstName}! Acompanhe suas metas para o ano de 2023.`}
-          subtitle={`${userInfo.firstName}, você precisa estar mais focado, já fazem 3 dias que você
+          title={`Olá, ${user.firstName}! Acompanhe suas metas para o ano de 2023.`}
+          subtitle={`${user.firstName}, você precisa estar mais focado, já fazem 3 dias que você
         não atualiza suas metas!`}
         />
 
-        {goals.length === 0 ? (
+        {goalsData.length === 0 ? (
           <EmptyState
             icon={<Sparkle />}
             message="Você ainda não cadastrou nenhuma meta"
           />
         ) : (
           <ul className={styles.goalsList}>
-            {goals.map((goal) => (
+            {goalsData.map((goal) => (
               <li key={goal.id}>
                 <Goal goalData={goal} onExclude={handleExcludeGoal} />
               </li>
@@ -111,11 +107,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     .orderBy("priority", "desc")
     .get();
 
-  const goalsData = JSON.stringify(
-    goals.docs.map((goalItem) => {
-      return { ...goalItem.data() };
-    })
-  );
+  const goalsData = goals.docs.map((goalItem) => {
+    return { ...goalItem.data() };
+  });
 
   const user: User = {
     fullName: session.user.name || "",
