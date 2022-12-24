@@ -9,6 +9,10 @@ import { GoalStatus } from "../components/Status";
 
 import styles from "../styles/styles.module.scss";
 import { Presentation } from "../components/Presentation";
+import {
+  GoalInfoToDelete,
+  ModalConfirmExcludeGoal,
+} from "../components/ModalConfirmExcludeGoal";
 
 export default function Home() {
   const [goals] = useState<GoalProps[]>([
@@ -27,7 +31,7 @@ export default function Home() {
       totalAccomplished: 70,
     },
     {
-      id: "1",
+      id: "2",
       title: "Curso de NextJS na Udemy",
       description:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
@@ -41,6 +45,22 @@ export default function Home() {
       totalAccomplished: 200,
     },
   ]);
+
+  const [goalInfoToDelete, setGoalInfoToDelete] = useState<GoalInfoToDelete>({
+    id: "",
+    title: "",
+  });
+
+  function handleExcludeGoal(goalInfo: GoalInfoToDelete) {
+    setGoalInfoToDelete(goalInfo);
+  }
+
+  function handleCloseModalConfirmDeletion() {
+    setGoalInfoToDelete({
+      id: "",
+      title: "",
+    });
+  }
 
   return (
     <>
@@ -64,7 +84,7 @@ export default function Home() {
           <ul className={styles.goalsList}>
             {goals.map((goal) => (
               <li key={goal.id}>
-                <Goal goalData={goal} />
+                <Goal goalData={goal} onExclude={handleExcludeGoal} />
               </li>
             ))}
           </ul>
@@ -76,6 +96,11 @@ export default function Home() {
           <IconButton.Button icon={<Plus />} />
         </IconButton.Link>
       </IconButton.Floating>
+
+      <ModalConfirmExcludeGoal
+        goalInfoToDelete={goalInfoToDelete}
+        onClose={handleCloseModalConfirmDeletion}
+      />
     </>
   );
 }
