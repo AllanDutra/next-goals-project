@@ -1,4 +1,5 @@
 import moment from "moment";
+import Link from "next/link";
 import {
   BatteryCharging,
   Clock,
@@ -65,9 +66,11 @@ export function Goal({ goalData }: Props) {
             }}
           >
             <div>
-              <button>
-                Atualizar <PencilSimple />
-              </button>
+              <Link href={`/goal-form/${goalData.id}`}>
+                <button>
+                  Atualizar <PencilSimple />
+                </button>
+              </Link>
 
               <button>
                 Excluir <Trash />
