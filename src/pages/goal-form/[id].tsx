@@ -14,7 +14,7 @@ export default function UpdateGoalForm() {
 
       <PageContainer>
         <GoalForm.Presentation
-          title={`Atualizar meta (${query.id})`}
+          title={`Atualizar meta`}
           subtitle="Edite as informações da meta nos campos abaixo"
         />
 
