@@ -16,6 +16,7 @@ import {
   GoalInfoToDelete,
   ModalConfirmExcludeGoal,
 } from "../components/ModalConfirmExcludeGoal";
+import { Utils } from "../functions/Utils";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -75,9 +76,13 @@ export default function Home() {
 
       <PageContainer>
         <Presentation
-          title="Olá, Usuário! Acompanhe suas metas para o ano de 2023."
-          subtitle="Usuário, você precisa estar mais focado, já fazem 3 dias que você
-        não atualiza suas metas!"
+          title={`Olá, ${Utils.getOnlyFirstName(
+            session?.user?.name
+          )}! Acompanhe suas metas para o ano de 2023.`}
+          subtitle={`${Utils.getOnlyFirstName(
+            session?.user?.name
+          )}, você precisa estar mais focado, já fazem 3 dias que você
+        não atualiza suas metas!`}
         />
 
         {goals.length === 0 ? (
