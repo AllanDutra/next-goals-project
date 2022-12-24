@@ -3,6 +3,9 @@ import { useRouter } from "next/router";
 import { GoalForm } from ".";
 import { PageContainer } from "../../components/PageContainer";
 
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
+
 export default function UpdateGoalForm() {
   const { query } = useRouter();
 
@@ -23,3 +26,19 @@ export default function UpdateGoalForm() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
+
+  if (!session?.user)
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+
+  return {
+    props: {},
+  };
+};

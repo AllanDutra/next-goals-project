@@ -7,6 +7,9 @@ import { Goal, GoalProps } from "../components/Goal";
 import { PageContainer } from "../components/PageContainer";
 import { GoalStatus } from "../components/Status";
 
+import { GetServerSideProps } from "next";
+import { getSession, useSession } from "next-auth/react";
+
 import styles from "../styles/styles.module.scss";
 import { Presentation } from "../components/Presentation";
 import {
@@ -15,6 +18,8 @@ import {
 } from "../components/ModalConfirmExcludeGoal";
 
 export default function Home() {
+  const { data: session } = useSession();
+
   const [goals] = useState<GoalProps[]>([
     {
       id: "1",
@@ -104,3 +109,19 @@ export default function Home() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
+
+  if (!session?.user)
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+
+  return {
+    props: {},
+  };
+};

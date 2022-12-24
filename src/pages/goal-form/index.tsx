@@ -24,6 +24,9 @@ import {
 } from "../../components/Presentation";
 import { GoalStatus, Status } from "../../components/Status";
 
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
+
 import styles from "./styles.module.scss";
 
 interface GoalFormValues {
@@ -194,5 +197,21 @@ function Content() {
     </ThemeProvider>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
+
+  if (!session?.user)
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+
+  return {
+    props: {},
+  };
+};
 
 export const GoalForm = { Presentation, Content };
