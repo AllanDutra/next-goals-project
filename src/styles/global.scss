@@ -42,6 +42,11 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  opacity: 0.5 !important;
+  pointer-events: none !important;
+}
+
 a {
   text-decoration: none;
   color: inherit;
