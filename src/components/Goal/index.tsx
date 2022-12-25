@@ -97,14 +97,14 @@ export function Goal({ goalData, onExclude }: Props) {
             <>
               <KeyValuePair.Label labelData="Atualizado em" icon={<Clock />} />
               <KeyValuePair.Value
-                valueData={moment(goalData.updated).format("LLL")}
+                valueData={moment(goalData.updated).format("L")}
               />
             </>
           ) : (
             <>
               <KeyValuePair.Label labelData="Criado em" icon={<Clock />} />
               <KeyValuePair.Value
-                valueData={moment(goalData.createdAt).format("LLL")}
+                valueData={moment(goalData.createdAt).format("L")}
               />
             </>
           )}
@@ -112,12 +112,9 @@ export function Goal({ goalData, onExclude }: Props) {
 
         {goalData.endForecast ? (
           <KeyValuePair.Container>
-            <KeyValuePair.Label
-              labelData="Previsão"
-              icon={<Clock />}
-            />
+            <KeyValuePair.Label labelData="Previsão" icon={<Clock />} />
             <KeyValuePair.Value
-              valueData={moment(goalData.endForecast).format("LLL")}
+              valueData={moment(goalData.endForecast).format("L")}
             />
           </KeyValuePair.Container>
         ) : null}
