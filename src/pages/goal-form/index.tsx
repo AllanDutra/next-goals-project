@@ -42,7 +42,7 @@ export interface GoalFormValues {
   title: string;
   description: string;
   status: GoalStatus;
-  endForecast?: Date; // TODO: Perguntar se quer inserir ou não
+  endForecast?: Date;
 
   priority: number;
   metric: string;
@@ -55,7 +55,10 @@ interface GoalFormPageProps {
 }
 
 interface GoalFormContentProps {
-  onSubmit(goalFormValues: GoalFormValues): Promise<void>;
+  onSubmit(
+    goalFormValues: GoalFormValues,
+    insertEndDate?: boolean
+  ): Promise<void>;
 }
 
 const formTheme = createTheme({
@@ -68,34 +71,23 @@ const formTheme = createTheme({
 export default function GoalFormPage({ userEmail }: GoalFormPageProps) {
   const router = useRouter();
 
-  async function handleAddNewGoal(goalFormValues: GoalFormValues) {
-    const {
-      title,
-      description,
-      status,
-      priority,
-      endForecast,
-      metric,
-      totalToAccomplish,
-      totalAccomplished,
-    } = goalFormValues;
+  async function handleAddNewGoal(
+    goalFormValues: GoalFormValues,
+    insertEndDate: boolean = false
+  ) {
+    const newGoalData = {
+      ...goalFormValues,
+      createdAt: new Date().toISOString(),
+      endForecast: goalFormValues.endForecast?.toISOString() || undefined,
+      userEmail,
+    };
+
+    if (!insertEndDate) {
+      delete newGoalData.endForecast;
+    }
 
     try {
-      await firebase
-        .firestore()
-        .collection("goals")
-        .add({
-          title,
-          description,
-          createdAt: new Date().toISOString(),
-          status,
-          priority,
-          endForecast: endForecast?.toISOString() || undefined,
-          metric,
-          totalToAccomplish,
-          totalAccomplished,
-          userEmail,
-        });
+      await firebase.firestore().collection("goals").add(newGoalData);
 
       toast("Nova meta adicionada com sucesso!", {
         type: "success",
@@ -186,10 +178,13 @@ function Content({ onSubmit: onSubmitForm }: GoalFormContentProps) {
   const onSubmit: SubmitHandler<GoalFormSchemaType> = async (
     goalFormValuesValidatedInZod
   ) => {
-    await onSubmitForm({
-      ...goalFormValuesValidatedInZod,
-      endForecast: endForecastDate || undefined,
-    });
+    await onSubmitForm(
+      {
+        ...goalFormValuesValidatedInZod,
+        endForecast: endForecastDate || undefined,
+      },
+      insertEndDate
+    );
   };
 
   return (
