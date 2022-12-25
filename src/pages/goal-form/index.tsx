@@ -27,18 +27,27 @@ import { GoalStatus, Status } from "../../components/Status";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 
+import { z } from "zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import styles from "./styles.module.scss";
 
-interface GoalFormValues {
+
+export interface GoalFormValues {
   title: string;
   description: string;
   status: GoalStatus;
   endForecast?: Date; // TODO: Perguntar se quer inserir ou não
 
-  priority: string;
+  priority: number;
   metric: string;
-  totalToAccomplish: string;
-  totalAccomplished?: string;
+  totalToAccomplish: number;
+  totalAccomplished?: number;
+}
+
+interface GoalFormContentProps {
+  onSubmit(goalFormValues: GoalFormValues): Promise<void>;
 }
 
 const formTheme = createTheme({
@@ -79,59 +88,127 @@ function Presentation({ title, subtitle }: PresentationProps) {
   );
 }
 
-function Content() {
-  const [goalFormValues] = useState<GoalFormValues>({
-    title: "",
-    description: "",
-    status: GoalStatus.NotStarted,
-    endForecast: new Date(),
+const GoalFormSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  status: z.preprocess(Number, z.number()),
+  insertEndDate: z.boolean().optional(),
+  endForecast: z.string().optional(),
+  priority: z.preprocess(
+    Number,
+    z.number({
+      invalid_type_error: "Informe um número válido",
+    })
+  ),
+  metric: z.string(),
+  totalToAccomplish: z.preprocess(
+    Number,
+    z.number({
+      invalid_type_error: "Informe um número válido",
+    })
+  ),
+  totalAccomplished: z.preprocess(
+    Number,
+    z.number({
+      invalid_type_error: "Informe um número válido",
+    })
+  ),
+});
 
-    priority: "",
-    metric: "",
-    totalToAccomplish: "",
-    totalAccomplished: "",
+type GoalFormSchemaType = z.infer<typeof GoalFormSchema>;
+
+function Content({ onSubmit: onSubmitForm }: GoalFormContentProps) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<GoalFormSchemaType>({
+    resolver: zodResolver(GoalFormSchema),
   });
 
   const [goalsStatuses] = useState<GoalStatus[]>([0, 1, 2, 3]);
 
   const [insertEndDate, setInsertEndDate] = useState(false);
 
+  const [endForecastDate, setEndForecastDate] = useState<Date | null>(
+    new Date()
+  );
+
+  const onSubmit: SubmitHandler<GoalFormSchemaType> = async (
+    goalFormValuesValidatedInZod
+  ) => {
+    await onSubmitForm({
+      ...goalFormValuesValidatedInZod,
+      endForecast: endForecastDate || undefined,
+    });
+  };
+
   return (
     <ThemeProvider theme={formTheme}>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.gridGroup}>
           <div className={styles.formGrid}>
+            <div className={styles.inputContainer}>
             <TextField
               autoFocus
               autoComplete="off"
               label="Título"
-              name="title"
-              value={goalFormValues.title}
+                required
+                {...register("title")}
+                disabled={isSubmitting}
             />
 
+              {errors.title && (
+                <p className={styles.errorMessage}>{errors.title.message}</p>
+              )}
+            </div>
+
+            <div className={styles.inputContainer}>
             <TextField
               autoComplete="off"
               label="Descrição"
-              name="description"
-              value={goalFormValues.description}
+                required
+                {...register("description")}
+                disabled={isSubmitting}
             />
 
+              {errors.description && (
+                <p className={styles.errorMessage}>
+                  {errors.description.message}
+                </p>
+              )}
+            </div>
+
+            <div className={styles.inputContainer}>
             <FormControl>
               <InputLabel>Status</InputLabel>
-              <Select label="Status" value={goalFormValues.status}>
+                <Select
+                  label="Status"
+                  defaultValue={GoalStatus.NotStarted}
+                  {...register("status")}
+                  disabled={isSubmitting}
+                >
                 {goalsStatuses.map((goalStatus) => (
-                  <MenuItem value={goalStatus}>
+                    <MenuItem key={goalStatus} value={goalStatus}>
                     {Status.getLabel(goalStatus)}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
 
+              {errors.status && (
+                <p className={styles.errorMessage}>{errors.status.message}</p>
+              )}
+            </div>
+
+            <div className={styles.inputContainer}>
             <div className={styles.endForecastContainer}>
               <FormControlLabel
                 control={
                   <Checkbox
                     checked={insertEndDate}
+                      {...register("insertEndDate")}
+                      disabled={isSubmitting}
                     onChange={() => setInsertEndDate(!insertEndDate)}
                   />
                 }
@@ -142,57 +219,110 @@ function Content() {
                 <DesktopDatePicker
                   label="Previsão de término"
                   inputFormat="DD/MM/YYYY"
-                  value={goalFormValues.endForecast}
-                  onChange={() => {}}
-                  renderInput={(params) => <TextField {...params} />}
-                  disabled={!insertEndDate}
+                    value={endForecastDate}
+                    onChange={(newValue) => setEndForecastDate(newValue)}
+                    renderInput={(params) => (
+                      <TextField {...params} {...register("endForecast")} />
+                    )}
+                    disabled={!insertEndDate || isSubmitting}
                 />
               </LocalizationProvider>
+              </div>
+
+              {errors.insertEndDate && (
+                <p className={styles.errorMessage}>
+                  {errors.insertEndDate.message}
+                </p>
+              )}
+              {errors.endForecast && (
+                <p className={styles.errorMessage}>
+                  {errors.endForecast.message}
+                </p>
+              )}
             </div>
           </div>
 
           <div className={styles.formGrid}>
+            <div className={styles.inputContainer}>
             <TextField
               autoComplete="off"
               label="Prioridade"
-              name="priority"
-              value={goalFormValues.priority}
+                required
               inputMode="numeric"
+                {...register("priority")}
+                disabled={isSubmitting}
             />
 
+              {errors.priority && (
+                <p className={styles.errorMessage}>{errors.priority.message}</p>
+              )}
+            </div>
+
+            <div className={styles.inputContainer}>
             <TextField
               autoComplete="off"
               label="Métrica"
-              name="metric"
-              value={goalFormValues.metric}
+                required
+                {...register("metric")}
+                disabled={isSubmitting}
             />
 
+              {errors.metric && (
+                <p className={styles.errorMessage}>{errors.metric.message}</p>
+              )}
+            </div>
+
+            <div className={styles.inputContainer}>
             <TextField
               autoComplete="off"
               label="Total a realizar"
-              name="totalToAccomplish"
-              value={goalFormValues.totalToAccomplish}
+                required
               inputMode="numeric"
+                {...register("totalToAccomplish")}
+                disabled={isSubmitting}
             />
 
+              {errors.totalToAccomplish && (
+                <p className={styles.errorMessage}>
+                  {errors.totalToAccomplish.message}
+                </p>
+              )}
+            </div>
+
+            <div className={styles.inputContainer}>
             <TextField
               autoComplete="off"
               label="Total realizado"
-              name="totalAccomplished"
-              value={goalFormValues.totalAccomplished}
               inputMode="numeric"
+                {...register("totalAccomplished")}
+                disabled={isSubmitting}
             />
+
+              {errors.totalAccomplished && (
+                <p className={styles.errorMessage}>
+                  {errors.totalAccomplished.message}
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
         <div className={styles.buttonGrid}>
           <Link href="/">
-            <button className={styles.outlineButton} type="button">
+            <button
+              className={styles.outlineButton}
+              type="button"
+              disabled={isSubmitting}
+            >
               Cancelar
             </button>
           </Link>
 
-          <button className={styles.primaryButton} type="submit">
+          <button
+            className={styles.primaryButton}
+            type="submit"
+            disabled={isSubmitting}
+          >
             Salvar
           </button>
         </div>

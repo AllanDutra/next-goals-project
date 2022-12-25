@@ -85,3 +85,14 @@
     margin-top: 1.5em;
   }
 }
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.errorMessage {
+  font-size: 0.9em;
+  color: #f44336;
+}
