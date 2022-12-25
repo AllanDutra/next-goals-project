@@ -113,7 +113,7 @@ export function Goal({ goalData, onExclude }: Props) {
         {goalData.endForecast ? (
           <KeyValuePair.Container>
             <KeyValuePair.Label
-              labelData="Previsão de término"
+              labelData="Previsão"
               icon={<Clock />}
             />
             <KeyValuePair.Value
