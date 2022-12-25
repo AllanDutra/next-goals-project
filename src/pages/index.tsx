@@ -54,9 +54,10 @@ export default function Home({ user, goalsData }: Props) {
 
       <PageContainer>
         <Presentation
-          title={`Olá, ${user.firstName}! Acompanhe suas metas para o ano de 2023.`}
-          subtitle={`${user.firstName}, você precisa estar mais focado, já fazem 3 dias que você
-        não atualiza suas metas!`}
+          title={`Olá, ${
+            user.firstName
+          }! Acompanhe suas metas para o ano de ${new Date().getFullYear()}.`}
+          subtitle="Um sonho não se torna realidade num passe de mágica, requer suor, determinação e trabalho duro."
         />
 
         {goalsData.length === 0 ? (
