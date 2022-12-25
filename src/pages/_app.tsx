@@ -48,6 +48,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <Component {...pageProps} />
         <ToastContainer
+          style={{
+            minWidth: "40%",
+          }}
           position="top-right"
           newestOnTop
           closeOnClick
