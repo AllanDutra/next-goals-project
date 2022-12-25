@@ -59,6 +59,17 @@ interface GoalFormContentProps {
     goalFormValues: GoalFormValues,
     insertEndDate?: boolean
   ): Promise<void>;
+  initialValues?: {
+    insertEndDate?: boolean;
+    endForecast?: string;
+    title: string;
+    description: string;
+    status: number;
+    priority: number;
+    metric: string;
+    totalToAccomplish: number;
+    totalAccomplished: number;
+  };
 }
 
 const formTheme = createTheme({
@@ -95,7 +106,9 @@ export default function GoalFormPage({ userEmail }: GoalFormPageProps) {
 
       router.push("/");
     } catch (err) {
-      toast(`Não foi possível cadastrar a nova meta: ${JSON.stringify(err)}`);
+      toast(`Não foi possível cadastrar a nova meta: ${JSON.stringify(err)}`, {
+        type: "error",
+      });
     }
   }
 
@@ -158,21 +171,29 @@ const GoalFormSchema = z.object({
 
 type GoalFormSchemaType = z.infer<typeof GoalFormSchema>;
 
-function Content({ onSubmit: onSubmitForm }: GoalFormContentProps) {
+function Content({
+  onSubmit: onSubmitForm,
+  initialValues,
+}: GoalFormContentProps) {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<GoalFormSchemaType>({
     resolver: zodResolver(GoalFormSchema),
+    values: initialValues,
   });
 
   const [goalsStatuses] = useState<GoalStatus[]>([0, 1, 2, 3]);
 
-  const [insertEndDate, setInsertEndDate] = useState(false);
+  const [insertEndDate, setInsertEndDate] = useState(
+    initialValues?.insertEndDate || false
+  );
 
   const [endForecastDate, setEndForecastDate] = useState<Date | null>(
-    new Date()
+    initialValues?.endForecast
+      ? new Date(Date.parse(initialValues.endForecast))
+      : new Date()
   );
 
   const onSubmit: SubmitHandler<GoalFormSchemaType> = async (
