@@ -7,7 +7,11 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { CircularProgress } from "@mui/material";
 
+import firebase from "../../services/firebaseConnection";
+
 import styles from "./styles.module.scss";
+import { toast } from "react-toastify";
+import { Notify } from "../../utils/Notify";
 
 export interface GoalInfoToDelete {
   id: string;
@@ -30,12 +34,20 @@ export function ModalConfirmExcludeGoal({ goalInfoToDelete, onClose }: Props) {
     onClose();
   }
 
-  function handleConfirmExcludeGoal(goalId: string) {
+  async function handleConfirmExcludeGoal(goalId: string) {
     if (isExcludingGoal) return;
 
     try {
       setIsExcludingGoal(true);
-    } catch {
+
+      await firebase.firestore().collection("goals").doc(goalId).delete();
+
+      Notify.notifyOnReload({
+        message: "Meta removida com sucesso!",
+        type: "success",
+      });
+    } catch (err) {
+      toast(`Não foi possível remover a meta, erro: ${JSON.stringify(err)}`);
     } finally {
       onClose();
       setIsExcludingGoal(false);
