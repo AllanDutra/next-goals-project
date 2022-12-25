@@ -32,7 +32,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import styles from "./styles.module.scss";
+import { useRouter } from "next/router";
 
+import firebase from "../../services/firebaseConnection";
+
+import { toast } from "react-toastify";
 
 export interface GoalFormValues {
   title: string;
@@ -46,6 +50,10 @@ export interface GoalFormValues {
   totalAccomplished?: number;
 }
 
+interface GoalFormPageProps {
+  userEmail: string;
+}
+
 interface GoalFormContentProps {
   onSubmit(goalFormValues: GoalFormValues): Promise<void>;
 }
@@ -57,7 +65,48 @@ const formTheme = createTheme({
   },
 });
 
-export default function GoalFormPage() {
+export default function GoalFormPage({ userEmail }: GoalFormPageProps) {
+  const router = useRouter();
+
+  async function handleAddNewGoal(goalFormValues: GoalFormValues) {
+    const {
+      title,
+      description,
+      status,
+      priority,
+      endForecast,
+      metric,
+      totalToAccomplish,
+      totalAccomplished,
+    } = goalFormValues;
+
+    try {
+      await firebase
+        .firestore()
+        .collection("goals")
+        .add({
+          title,
+          description,
+          createdAt: new Date().toISOString(),
+          status,
+          priority,
+          endForecast: endForecast?.toISOString() || undefined,
+          metric,
+          totalToAccomplish,
+          totalAccomplished,
+          userEmail,
+        });
+
+      toast("Nova meta adicionada com sucesso!", {
+        type: "success",
+      });
+
+      router.push("/");
+    } catch (err) {
+      toast(`Não foi possível cadastrar a nova meta: ${JSON.stringify(err)}`);
+    }
+  }
+
   return (
     <>
       <Head>
@@ -70,7 +119,7 @@ export default function GoalFormPage() {
           subtitle="Preencha os campos abaixo para cadastrar uma nova meta"
         />
 
-        <Content />
+        <Content onSubmit={handleAddNewGoal} />
       </PageContainer>
     </>
   );
@@ -149,14 +198,14 @@ function Content({ onSubmit: onSubmitForm }: GoalFormContentProps) {
         <div className={styles.gridGroup}>
           <div className={styles.formGrid}>
             <div className={styles.inputContainer}>
-            <TextField
-              autoFocus
-              autoComplete="off"
-              label="Título"
+              <TextField
+                autoFocus
+                autoComplete="off"
+                label="Título"
                 required
                 {...register("title")}
                 disabled={isSubmitting}
-            />
+              />
 
               {errors.title && (
                 <p className={styles.errorMessage}>{errors.title.message}</p>
@@ -164,13 +213,13 @@ function Content({ onSubmit: onSubmitForm }: GoalFormContentProps) {
             </div>
 
             <div className={styles.inputContainer}>
-            <TextField
-              autoComplete="off"
-              label="Descrição"
+              <TextField
+                autoComplete="off"
+                label="Descrição"
                 required
                 {...register("description")}
                 disabled={isSubmitting}
-            />
+              />
 
               {errors.description && (
                 <p className={styles.errorMessage}>
@@ -180,21 +229,21 @@ function Content({ onSubmit: onSubmitForm }: GoalFormContentProps) {
             </div>
 
             <div className={styles.inputContainer}>
-            <FormControl>
-              <InputLabel>Status</InputLabel>
+              <FormControl>
+                <InputLabel>Status</InputLabel>
                 <Select
                   label="Status"
                   defaultValue={GoalStatus.NotStarted}
                   {...register("status")}
                   disabled={isSubmitting}
                 >
-                {goalsStatuses.map((goalStatus) => (
+                  {goalsStatuses.map((goalStatus) => (
                     <MenuItem key={goalStatus} value={goalStatus}>
-                    {Status.getLabel(goalStatus)}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+                      {Status.getLabel(goalStatus)}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
               {errors.status && (
                 <p className={styles.errorMessage}>{errors.status.message}</p>
@@ -202,31 +251,31 @@ function Content({ onSubmit: onSubmitForm }: GoalFormContentProps) {
             </div>
 
             <div className={styles.inputContainer}>
-            <div className={styles.endForecastContainer}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={insertEndDate}
+              <div className={styles.endForecastContainer}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={insertEndDate}
                       {...register("insertEndDate")}
                       disabled={isSubmitting}
-                    onChange={() => setInsertEndDate(!insertEndDate)}
-                  />
-                }
-                label="Inserir previsão de término"
-              />
+                      onChange={() => setInsertEndDate(!insertEndDate)}
+                    />
+                  }
+                  label="Inserir previsão de término"
+                />
 
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DesktopDatePicker
-                  label="Previsão de término"
-                  inputFormat="DD/MM/YYYY"
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DesktopDatePicker
+                    label="Previsão de término"
+                    inputFormat="DD/MM/YYYY"
                     value={endForecastDate}
                     onChange={(newValue) => setEndForecastDate(newValue)}
                     renderInput={(params) => (
                       <TextField {...params} {...register("endForecast")} />
                     )}
                     disabled={!insertEndDate || isSubmitting}
-                />
-              </LocalizationProvider>
+                  />
+                </LocalizationProvider>
               </div>
 
               {errors.insertEndDate && (
@@ -244,14 +293,14 @@ function Content({ onSubmit: onSubmitForm }: GoalFormContentProps) {
 
           <div className={styles.formGrid}>
             <div className={styles.inputContainer}>
-            <TextField
-              autoComplete="off"
-              label="Prioridade"
+              <TextField
+                autoComplete="off"
+                label="Prioridade"
                 required
-              inputMode="numeric"
+                inputMode="numeric"
                 {...register("priority")}
                 disabled={isSubmitting}
-            />
+              />
 
               {errors.priority && (
                 <p className={styles.errorMessage}>{errors.priority.message}</p>
@@ -259,13 +308,13 @@ function Content({ onSubmit: onSubmitForm }: GoalFormContentProps) {
             </div>
 
             <div className={styles.inputContainer}>
-            <TextField
-              autoComplete="off"
-              label="Métrica"
+              <TextField
+                autoComplete="off"
+                label="Métrica"
                 required
                 {...register("metric")}
                 disabled={isSubmitting}
-            />
+              />
 
               {errors.metric && (
                 <p className={styles.errorMessage}>{errors.metric.message}</p>
@@ -273,14 +322,14 @@ function Content({ onSubmit: onSubmitForm }: GoalFormContentProps) {
             </div>
 
             <div className={styles.inputContainer}>
-            <TextField
-              autoComplete="off"
-              label="Total a realizar"
+              <TextField
+                autoComplete="off"
+                label="Total a realizar"
                 required
-              inputMode="numeric"
+                inputMode="numeric"
                 {...register("totalToAccomplish")}
                 disabled={isSubmitting}
-            />
+              />
 
               {errors.totalToAccomplish && (
                 <p className={styles.errorMessage}>
@@ -290,13 +339,13 @@ function Content({ onSubmit: onSubmitForm }: GoalFormContentProps) {
             </div>
 
             <div className={styles.inputContainer}>
-            <TextField
-              autoComplete="off"
-              label="Total realizado"
-              inputMode="numeric"
+              <TextField
+                autoComplete="off"
+                label="Total realizado"
+                inputMode="numeric"
                 {...register("totalAccomplished")}
                 disabled={isSubmitting}
-            />
+              />
 
               {errors.totalAccomplished && (
                 <p className={styles.errorMessage}>
@@ -343,7 +392,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
 
   return {
-    props: {},
+    props: {
+      userEmail: session.user.email,
+    },
   };
 };
 
