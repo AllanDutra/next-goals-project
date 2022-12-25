@@ -47,7 +47,9 @@ export function ModalConfirmExcludeGoal({ goalInfoToDelete, onClose }: Props) {
         type: "success",
       });
     } catch (err) {
-      toast(`Não foi possível remover a meta, erro: ${JSON.stringify(err)}`);
+      toast(`Não foi possível remover a meta, erro: ${JSON.stringify(err)}`, {
+        type: "error",
+      });
     } finally {
       onClose();
       setIsExcludingGoal(false);
