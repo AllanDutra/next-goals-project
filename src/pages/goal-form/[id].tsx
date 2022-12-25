@@ -18,6 +18,10 @@ interface GoalDetails extends GoalProps, GoalFormValues {
   userEmail: string;
 }
 
+interface UpdateGoalFormParams {
+  id: string;
+}
+
 interface UpdateGoalFormProps {
   goalDetailsData: string;
 }
@@ -100,7 +104,18 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
   params,
 }) => {
-  const { id } = params;
+  function instanceOfUpdateGoalFormParams(
+    object: any
+  ): object is UpdateGoalFormParams {
+    return "id" in object;
+  }
+
+  function getParamsId(): string {
+    if (instanceOfUpdateGoalFormParams(params)) return params.id;
+
+    return "";
+  }
+
   const session = await getSession({ req });
 
   if (!session?.user)
@@ -114,7 +129,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const goalDetailsData = await firebase
     .firestore()
     .collection("goals")
-    .doc(id)
+    .doc(getParamsId())
     .get()
     .then((snapshot) => {
       const snapshotData = snapshot.data();
