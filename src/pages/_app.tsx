@@ -8,8 +8,11 @@ import { SessionProvider as NextAuthProvider } from "next-auth/react";
 
 import "../styles/global.scss";
 
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
+import { ReloadNotificationProps } from "../utils/Notify";
+import { RELOAD_NOTIFICATION } from "../configs";
 
 moment.locale("pt-br");
 
@@ -26,6 +29,20 @@ export const theme = createTheme({
 });
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    const reloadNotification = sessionStorage.getItem(RELOAD_NOTIFICATION);
+
+    if (reloadNotification) {
+      const { message, type } = JSON.parse(
+        reloadNotification
+      ) as ReloadNotificationProps;
+
+      toast(message, { type });
+
+      sessionStorage.removeItem(RELOAD_NOTIFICATION);
+    }
+  }, []);
+
   return (
     <NextAuthProvider session={pageProps.session}>
       <ThemeProvider theme={theme}>
