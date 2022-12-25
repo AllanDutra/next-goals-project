@@ -108,7 +108,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     .get();
 
   const goalsData = goals.docs.map((goalItem) => {
-    return { ...goalItem.data() };
+    return { ...goalItem.data(), id: goalItem.id };
   });
 
   const user: User = {
