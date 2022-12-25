@@ -1,6 +1,6 @@
-$primary: #161B22;
-$primaryShadow: #161B223d;
-$theme: #0D1117;
+$primary: #161b22;
+$primaryShadow: #161b223d;
+$theme: #0d1117;
 
 .header {
   background-color: $primary;
@@ -28,6 +28,10 @@ $theme: #0D1117;
       background: lighten($primary, 4);
     }
   }
+
+  @media(max-width: 950px) {
+    padding: 2.5em 2em;
+  }
 }
 
 .userPictureContainer {
@@ -46,6 +50,16 @@ $theme: #0D1117;
     border: 0.4em solid $theme;
     box-shadow: 0px 2px 4px 0 rgb(0 0 0 / 12%);
   }
+
+  @media (max-width: 950px) {
+    left: 3em;
+    bottom: -2.25em;
+    
+    img {
+      width: 5em;
+      height: 5em;
+    }
+  }
 }
 
 .container {
@@ -53,4 +67,8 @@ $theme: #0D1117;
   min-height: calc(100vh - 9.8em);
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 950px) {
+    padding: 1.75em;
+  }
 }

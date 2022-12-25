@@ -19,18 +19,28 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8em;
+
+  @media (max-width: 950px) {
+    grid-template-columns: 1fr;
+    gap: 1.5em;
+  }
 }
 
 .formGrid {
   display: flex;
   flex-direction: column;
   gap: 2em;
+
+  @media (max-width: 950px) {
+    gap: 1.5em;
+  }
 }
 
 .endForecastContainer {
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: 1.5em;
+  color: #c9d1d9;
 }
 
 .buttonGrid {
@@ -68,5 +78,10 @@
     &:hover {
       background: lighten(#30363d, 5);
     }
+  }
+
+  @media (max-width: 950px) {
+    gap: 1.5em;
+    margin-top: 1.5em;
   }
 }

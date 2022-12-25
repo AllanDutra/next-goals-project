@@ -157,6 +157,7 @@ function Content() {
               label="Prioridade"
               name="priority"
               value={goalFormValues.priority}
+              inputMode="numeric"
             />
 
             <TextField
@@ -171,6 +172,7 @@ function Content() {
               label="Total a realizar"
               name="totalToAccomplish"
               value={goalFormValues.totalToAccomplish}
+              inputMode="numeric"
             />
 
             <TextField
@@ -178,6 +180,7 @@ function Content() {
               label="Total realizado"
               name="totalAccomplished"
               value={goalFormValues.totalAccomplished}
+              inputMode="numeric"
             />
           </div>
         </div>

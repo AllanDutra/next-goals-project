@@ -12,7 +12,6 @@ export function EmptyState({ icon, message }: Props) {
     <div className={styles.container}>
       <IconContext.Provider
         value={{
-          size: 120,
           weight: "fill",
         }}
       >

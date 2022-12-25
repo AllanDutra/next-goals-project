@@ -9,6 +9,7 @@ $primary: #59616e;
   gap: 2em;
   opacity: 0.9;
   color: lighten($primary, 30);
+  text-align: center;
 
   *:first-child {
     color: lighten($primary, 50);
@@ -17,5 +18,14 @@ $primary: #59616e;
   p {
     font-size: 1.25em;
     font-weight: 300;
+  }
+
+  svg {
+    width: 7.5em;
+    height: 7.5em;
+  }
+
+  @media (max-width: 950px) {
+
   }
 }
