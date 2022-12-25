@@ -104,6 +104,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     .firestore()
     .collection("goals")
     .where("userEmail", "==", session.user.email)
+    .orderBy("status", "asc")
     .orderBy("priority", "desc")
     .get();
 
