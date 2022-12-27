@@ -49,12 +49,16 @@ export default function UpdateGoalForm({
 
     const updateGoalData = {
       ...goalFormValues,
-      status: getUpdatedGoalStatus(),
       updated: new Date().toISOString(),
       endForecast: insertEndDate
         ? goalFormValues.endForecast?.toISOString()
         : firebase.firestore.FieldValue.delete(),
     };
+
+    updateGoalData.status = getUpdatedGoalStatus();
+
+    if (updateGoalData.status === GoalStatus.Finished)
+      updateGoalData.priority = 0;
 
     try {
       await firebase
