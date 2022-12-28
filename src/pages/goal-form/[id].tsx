@@ -157,7 +157,21 @@ export const getServerSideProps: GetServerSideProps = async ({
 
         return JSON.stringify(goalDetailsData);
       }
+
+      return null;
+    })
+    .catch(() => {
+      return null;
     });
+
+  if (goalDetailsData === null) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {
