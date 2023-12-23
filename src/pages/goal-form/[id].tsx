@@ -8,7 +8,7 @@ import { getSession } from "next-auth/react";
 
 import firebase from "../../services/firebaseConnection";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { GoalStatus } from "../../components/Status";
@@ -31,7 +31,10 @@ export default function UpdateGoalForm({
 }: UpdateGoalFormProps) {
   const router = useRouter();
 
-  const [goalDetails] = useState(JSON.parse(goalDetailsData) as GoalDetails);
+  const goalDetails = useMemo(
+    () => JSON.parse(goalDetailsData) as GoalDetails,
+    [goalDetailsData]
+  );
 
   async function handleUpdateGoal(
     goalFormValues: GoalFormValues,
