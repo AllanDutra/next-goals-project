@@ -249,7 +249,7 @@ function Content({
                 <InputLabel>Status</InputLabel>
                 <Select
                   label="Status"
-                  defaultValue={GoalStatus.NotStarted}
+                  defaultValue={initialValues?.status}
                   {...register("status")}
                   disabled={isSubmitting}
                 >
