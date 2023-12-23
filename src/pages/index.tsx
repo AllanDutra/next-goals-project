@@ -56,8 +56,8 @@ export default function Home({ user, goalsData }: Props) {
         <Presentation
           title={`Olá, ${
             user.firstName
-          }! Acompanhe suas metas para o ano de ${new Date().getFullYear()}.`}
-          subtitle="Um sonho não se torna realidade num passe de mágica, requer suor, determinação e trabalho duro."
+          }! Acompanhe suas metas para o ano de ${new Date().getFullYear()}`}
+          subtitle="Um sonho não se torna realidade num passe de mágica, requer suor, determinação e trabalho duro"
         />
 
         {goalsData.length === 0 ? (
